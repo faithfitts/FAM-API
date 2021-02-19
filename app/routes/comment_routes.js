@@ -33,6 +33,7 @@ router.post('/comments', requireToken, (req, res, next) => {
       return newComment
     })
     .then((newComment) => res.status(201).json({ newComment }))
+    .catch(next)
 })
 
 // UPDATE comment
@@ -60,6 +61,7 @@ router.patch('/comments/:commentId', requireToken, (req, res, next) => {
       return updatedComment
     })
     .then((updatedComment) => res.status(201).json({ updatedComment }))
+    .catch(next)
 })
 
 // DELETE comment
