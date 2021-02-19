@@ -66,7 +66,11 @@ app.use(commentRoutes)
 // note that this comes after the route middlewares, because it needs to be
 // passed any error messages from them
 app.use(errorHandler)
-seed()
+try {
+  seed()
+} catch (error) {
+  console.error(error)
+}
 
 // run API on designated port (4741 in this case)
 app.listen(port, () => {
