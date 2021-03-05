@@ -9,4 +9,4 @@ const seedUser = function () {
     .catch(err => console.log(err))
 }
 
-module.exports = seedUser
+seedUser()

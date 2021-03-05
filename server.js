@@ -2,7 +2,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const seed = require('./seed/userseed')
 
 // require route files
 const userRoutes = require('./app/routes/user_routes')
@@ -66,11 +65,6 @@ app.use(commentRoutes)
 // note that this comes after the route middlewares, because it needs to be
 // passed any error messages from them
 app.use(errorHandler)
-try {
-  seed()
-} catch (error) {
-  console.error(error)
-}
 
 // run API on designated port (4741 in this case)
 app.listen(port, () => {

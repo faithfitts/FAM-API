@@ -5,6 +5,7 @@ const passport = require('passport')
 // pull in error types and the logic to handle them and set status codes
 const errors = require('../../lib/custom_errors')
 const handle404 = errors.handle404
+const requireOwnership = errors.requireOwnership
 
 const Post = require('../models/post')
 
@@ -45,12 +46,16 @@ router.patch('/comments/:commentId', requireToken, (req, res, next) => {
   const commentData = req.body.comment
   // extract Post Id
   const postId = req.body.comment.postId
+  // if the client attempts to change the `owner` property by including a new
+  // owner, prevent that by deleting that key/value pair
+  delete req.body.comment.owner
 
   Post.findById(postId)
     .populate('owner', '_id email')
     .then(handle404)
     .then(post => {
       const comment = post.comments.id(commentId)
+      requireOwnership(req, comment)
 
       comment.set(commentData)
       return post.save()
@@ -76,6 +81,7 @@ router.delete('/comments/:commentId', requireToken, (req, res, next) => {
     .then(handle404)
     .then(post => {
       const comment = post.comments.id(commentId)
+      requireOwnership(req, comment)
 
       comment.remove()
 

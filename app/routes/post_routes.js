@@ -24,7 +24,6 @@ router.post('/posts', requireToken, (req, res, next) => {
   const postData = req.body.post
   postData.owner = req.user._id
   Post.create(postData)
-  // might need toObject method inside curlies
     .then(post => res.status(201).json({ post: post }))
     .catch(next)
 })
@@ -33,7 +32,7 @@ router.post('/posts', requireToken, (req, res, next) => {
 // GET /posts
 router.get('/posts', requireToken, (req, res, next) => {
   Post.find()
-    .populate('owner', '_id email')
+    .populate('owner')
     .then(post => {
       res.status(200).json({ post: post })
     })
@@ -45,11 +44,11 @@ router.get('/posts', requireToken, (req, res, next) => {
 router.get('/posts/:id', requireToken, (req, res, next) => {
   const id = req.params.id
   Post.findOne({ _id: id })
-    .populate('owner', 'email _id')
-    .populate('comments.owner', 'email _id')
+    .populate('owner')
+    .populate('comments.owner')
     .then(handle404)
     .then(post => {
-      // requireOwnership(req, post)
+      // console.log(post)
       res.status(200).json({ post: post })
     })
     .catch(next)

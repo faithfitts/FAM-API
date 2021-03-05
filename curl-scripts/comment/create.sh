@@ -10,8 +10,7 @@ curl "${API}${URL_PATH}" \
   --header "Authorization: Bearer ${TOKEN}" \
   --data '{
     "comment": {
-      "text": "'"${TEXT}"'",
-      "title": "'"${TITLE}"'"
+      "content": "'"${CONTENT}"'",
     }
   }'
 
